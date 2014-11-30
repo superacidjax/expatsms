@@ -32,6 +32,13 @@ class Smser < Sinatra::Base
     end
   end
 
+  get '/sms-quickstart' do
+    twiml = Twilio::TwiML::Response.new do |r|
+      r.Message "Hey Monkey. Thanks for the message!"
+    end
+    twiml.text
+  end
+
   def create_client
     @client = Twilio::REST::Client.new
   end
