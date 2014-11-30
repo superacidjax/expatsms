@@ -3,11 +3,13 @@ require 'twilio-ruby'
 
 class Smser < Sinatra::Base
 
-#  set :public_folder => "public", :static => true
+  account_sid = ENV['ACCOUNT_SID']
+  auth_token = ENV['AUTH_TOKEN']
 
-#  get "/" do
-#    erb :welcome
-#  end
+  Twilio.configure do |config|
+    config.account_sid = account_sid
+    config.auth_token = auth_token
+  end
 
   get '/' do
     'Welcome to Expat SMS'
@@ -18,5 +20,27 @@ class Smser < Sinatra::Base
       r.Message 'Message recieved.' 
     end
     twiml.text
+  end
+
+  get '/smser-send' do
+    if params[:outgoing_number]
+      create_client
+      send_sms(@client, params[:outgoing_number])
+      'Message sent? Maybe..'
+    else
+      'Something is not right with the world'
+    end
+  end
+
+  def create_client
+    @client = Twilio::REST:client.new
+  end
+
+  def send_sms(client, outgoing_number)
+    client.messages.create(
+      from: '+17135742325',
+      to: outgoing_number,
+      body: 'Hi from Expat SMS'
+    )
   end
 end
