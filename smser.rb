@@ -33,7 +33,7 @@ class Smser < Sinatra::Base
   end
 
   def create_client
-    @client = Twilio::REST:client.new
+    @client = Twilio::REST::Client.new
   end
 
   def send_sms(client, outgoing_number)
