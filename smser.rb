@@ -10,6 +10,10 @@ class Smser < Sinatra::Base
 #    erb :welcome
 #  end
 
+  get '/' do
+    'Welcome to Expat SMS'
+  end
+
   get '/smser-in' do
     twiml = Twilio::TwiML::Response.new do |r|
       r.Message 'Message recieved.' 
